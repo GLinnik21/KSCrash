@@ -1,7 +1,6 @@
 // swift-tools-version:5.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
-import Foundation
 @preconcurrency import PackageDescription
 
 // MARK: - Package Definition
@@ -40,12 +39,12 @@ let package = Package(
             cSettings: [
                 .headerSearchPath("."),
                 .headerSearchPath("Monitors"),
-                .unsafeFlags(developmentUnsafeFlags),
+                .unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug)),
             ],
             cxxSettings: [
                 .headerSearchPath("."),
                 .headerSearchPath("Monitors"),
-                .unsafeFlags(developmentUnsafeFlags),
+                .unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug)),
             ]
         ),
         .testTarget(
@@ -59,7 +58,7 @@ let package = Package(
             cSettings: [
                 .headerSearchPath("../../Sources/\(Targets.recording)"),
                 .headerSearchPath("../../Sources/\(Targets.recording)/Monitors"),
-                .unsafeFlags(developmentUnsafeFlags),
+                .unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug)),
             ]
         ),
 
@@ -68,7 +67,7 @@ let package = Package(
             name: Targets.recordingCore,
             dependencies: [.target(name: Targets.core)],
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
         .testTarget(
             name: Targets.recordingCore.tests,
@@ -77,19 +76,19 @@ let package = Package(
                 .target(name: Targets.recordingCore),
                 .target(name: Targets.core),
             ],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
         .testTarget(
             name: Targets.recordingCoreSwift.tests,
             dependencies: [.target(name: Targets.recordingCore)],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
 
         .target(
             name: Targets.reportingCore,
             dependencies: [.target(name: Targets.core)],
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)],
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))],
             linkerSettings: [.linkedLibrary("z")]
         ),
         .testTarget(
@@ -98,18 +97,18 @@ let package = Package(
                 .target(name: Targets.reportingCore),
                 .target(name: Targets.core),
             ],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
 
         .target(
             name: Targets.core,
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
         .testTarget(
             name: Targets.core.tests,
             dependencies: [.target(name: Targets.core)],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
 
         // MARK: Filter Targets
@@ -121,7 +120,7 @@ let package = Package(
                 .target(name: Targets.reportingCore),
             ],
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
         .testTarget(
             name: Targets.filters.tests,
@@ -132,7 +131,7 @@ let package = Package(
                 .target(name: Targets.reportingCore),
             ],
             resources: [.process("Resources")],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
 
         .target(
@@ -146,7 +145,7 @@ let package = Package(
                 .headerSearchPath("llvm/ADT"),
                 .headerSearchPath("llvm/Config"),
                 .headerSearchPath("llvm/Support"),
-                .unsafeFlags(developmentUnsafeFlags),
+                .unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug)),
             ],
             cxxSettings: [
                 .headerSearchPath("swift"),
@@ -155,7 +154,7 @@ let package = Package(
                 .headerSearchPath("llvm/ADT"),
                 .headerSearchPath("llvm/Config"),
                 .headerSearchPath("llvm/Support"),
-                .unsafeFlags(developmentUnsafeFlags),
+                .unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug)),
             ]
         ),
         .testTarget(
@@ -164,7 +163,7 @@ let package = Package(
                 .target(name: Targets.demangleFilter),
                 .target(name: Targets.recording),
             ],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
 
         // MARK: Sink Targets
@@ -175,7 +174,7 @@ let package = Package(
                 .target(name: Targets.filters),
             ],
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
 
         // MARK: Installation Targets
@@ -188,7 +187,7 @@ let package = Package(
                 .target(name: Targets.demangleFilter),
             ],
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
         .testTarget(
             name: Targets.installations.tests,
@@ -198,7 +197,7 @@ let package = Package(
                 .target(name: Targets.sinks),
                 .target(name: Targets.recording),
             ],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
 
         // MARK: Monitor Targets
@@ -206,7 +205,7 @@ let package = Package(
             name: Targets.discSpaceMonitor,
             dependencies: [.target(name: Targets.recordingCore)],
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
         .testTarget(
             name: Targets.discSpaceMonitor.tests,
@@ -214,14 +213,14 @@ let package = Package(
                 .target(name: Targets.discSpaceMonitor),
                 .target(name: Targets.recordingCore),
             ],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
 
         .target(
             name: Targets.bootTimeMonitor,
             dependencies: [.target(name: Targets.recordingCore)],
             resources: [.copy("Resources/PrivacyInfo.xcprivacy")],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
         .testTarget(
             name: Targets.bootTimeMonitor.tests,
@@ -229,14 +228,14 @@ let package = Package(
                 .target(name: Targets.bootTimeMonitor),
                 .target(name: Targets.recordingCore),
             ],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
 
         // MARK: Utility Targets
         .target(
             name: Targets.testTools,
             dependencies: [.target(name: Targets.recordingCore)],
-            cSettings: [.unsafeFlags(developmentUnsafeFlags)]
+            cSettings: [.unsafeFlags(developmentUnsafeFlags, .when(configuration: .debug))]
         ),
     ],
     cxxLanguageStandard: .gnucxx11
@@ -262,18 +261,7 @@ private enum Targets {
 
 // MARK: - Development Configuration
 
-private var isDevelopmentBuild: Bool {
-    let developmentFlagPath = URL(fileURLWithPath: #file)
-        .deletingLastPathComponent()
-        .appendingPathComponent(".kscrash_development")
-        .path
-
-    return FileManager.default.fileExists(atPath: developmentFlagPath)
-}
-
 private var developmentUnsafeFlags: [String] {
-    guard isDevelopmentBuild else { return [] }
-
     return [
         // The main ones
         "-Werror",
